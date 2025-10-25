@@ -1,0 +1,22 @@
+{
+    "mcpServers": {
+        "ai_chat_mcp": {
+            "timeout": 60,
+            "type": "stdio",
+            "command": "uv",
+            "args": [
+                "--directory",
+                "<PATH_TO_VENV>",
+                "run",
+                "-m",
+                "ai_chat_mcp.mcp.mcp_server"
+            ],
+            "env": {
+                "OPENAI_API_KEY": "sk-****",
+                "AZURE_OPENAI": "false",
+                "OPENAI_COMPLETION_MODEL": "gpt-4.1",
+                "OPENAI_EMBEDDING_MODEL": "text-embedding-3-small"
+            }
+        }
+    }
+}
