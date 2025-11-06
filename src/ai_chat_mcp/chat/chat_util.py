@@ -214,8 +214,7 @@ class ChatUtil:
             summary_input =  summary_prompt_text + "\n".join([chat_output.output for chat_output in chat_output_list])
             total_tokens = sum([chat_output.total_tokens for chat_output in chat_output_list])
             # openai_chatの入力用のdictを作成する
-            summary_input_dict = OpenAIProps.create_openai_chat_parameter_dict_simple(client.props.completion_model, summary_input, input_dict.temperature,  False)
-            summary_chat_request = CompletionRequest(**summary_input_dict)
+            summary_chat_request = CompletionRequest.create_simple_request(client.props.completion_model, summary_input, input_dict.temperature,  False)
             # chatを実行する
             summary_chat_output = await client.run_completion_async(summary_chat_request)
             # total_tokensを更新する

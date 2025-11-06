@@ -91,18 +91,6 @@ class OpenAIProps(BaseModel):
             base64_encoded_data = base64.b64encode(image_file.read()).decode('utf-8')
         return f"data:{mime_type};base64,{base64_encoded_data}"
 
-    @staticmethod
-    def create_openai_chat_parameter_dict_simple(model: str, prompt: str, temperature: Union[float, None] = 0.5, json_mode: bool = False) -> dict:
-        messages = [{"role": "user", "content": [prompt]}]
-        params: dict[str, Any] = {}
-        params["messages"] = messages
-        params["model"] = model
-        if temperature:
-            params["temperature"] = temperature
-        if json_mode:
-            params["response_format"] = {"type": "json_object"}
-        return params
-
 
 import json
 from openai import AsyncOpenAI, AsyncAzureOpenAI
@@ -323,6 +311,20 @@ class CompletionRequest(BaseModel):
             params["response_format"] = self.response_format
         logger.debug(f"Converting chat messages to dict: {params}")
         return params
+
+    @classmethod
+    def create_simple_request(cls, model: str, prompt: str, temperature: Union[float, None] = 0.5, json_mode: bool = False) -> "CompletionRequest":
+        content_item = ChatContentItem(type="text", text=prompt)
+        chat_message = ChatMessageItem(role="user", content=[content_item])
+        messages = [chat_message]
+        chat_request = cls(messages=messages, model=model) 
+
+        if temperature:
+            chat_request.temperature = temperature
+        if json_mode:
+            chat_request.response_format = {"type": "json_object"}
+        return chat_request
+
 
 class CompletionResponse(BaseModel):
     output: str = Field(default="", description="The output text from the chat model.")
