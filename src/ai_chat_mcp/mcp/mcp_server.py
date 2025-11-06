@@ -6,7 +6,9 @@ from dotenv import load_dotenv
 import argparse
 from fastmcp import FastMCP
 from pydantic import Field
-from ai_chat_mcp.util.chat_util import ChatUtil, CompletionRequest, ChatRequestContext, CompletionResponse
+from ai_chat_mcp.chat.chat_util import ChatUtil,  ChatRequestContext
+from ai_chat_mcp.llm.llm_util import CompletionRequest, CompletionResponse
+
 mcp = FastMCP("ai_chat_mcp") #type :ignore
 
 # toolは実行時にmcp.tool()で登録する。@mcp.toolは使用しない。
